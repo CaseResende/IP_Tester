@@ -133,7 +133,6 @@ Contribuições são bem-vindas! Para contribuir:
 5. Abra um Pull Request.
 
 ## 📜 Licença
-Este projeto está licenciado sob a Licença MIT – veja o arquivo LICENSE para mais detalhes.
+Este projeto está licenciado sob a Licença MIT – veja o arquivo [LICENSE](https://github.com/CaseResende/IP_Tester/blob/main/LICENSE) para mais detalhes.
 
-Desenvolvido por **Carlos André Resende Belo**. 😎
-GitHub: https://github.com/CaseResende
+Desenvolvido por **[Carlos André Resende Belo](https://github.com/CaseResende)**. 😎
