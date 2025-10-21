@@ -77,7 +77,7 @@ def main(page: ft.Page):
         for ip, online, rtt, msg in results:
             status_text = "🟢 Online" if online else "🔴 Offline"
             rtt_text = f"{rtt:.2f}" if rtt else "—"
-            text_to_copy += f"{ip:<16} {status_text:<10} {rtt_text:<10} {msg}\n"
+            text_to_copy += f"{ip:<20} {status_text:<10} {rtt_text:<10} {msg}\n"
 
         # Copia para a área de transferência
         page.set_clipboard(text_to_copy)
