@@ -38,10 +38,10 @@ def create_table():
     """Cria a tabela para exibir resultados"""
     return ft.DataTable(
         columns=[
-            ft.DataColumn(ft.Text("Endereço IP")),
-            ft.DataColumn(ft.Text("Status")),
-            ft.DataColumn(ft.Text("Tempo (ms)")),
-            ft.DataColumn(ft.Text("Mensagem")),
+            ft.DataColumn(ft.Text("Endereço IP", text_align=ft.TextAlign.CENTER)),
+            ft.DataColumn(ft.Text("Status", text_align=ft.TextAlign.CENTER)),
+            ft.DataColumn(ft.Text("Tempo (ms)", text_align=ft.TextAlign.CENTER)),
+            ft.DataColumn(ft.Text("Mensagem", text_align=ft.TextAlign.CENTER)),
         ],
         rows=[],
         width=TABLE_WIDTH,
@@ -56,7 +56,7 @@ def create_progress_bar():
 
 def update_table(table, results):
     table.rows.clear()
-    for ip, online, rtt, msg in sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0]))):
+    for ip, online, rtt, msg in results:
         color = ft.Colors.GREEN_400 if online else ft.Colors.RED_400
         status_text = "🟢 Online" if online else "🔴 Offline"
         table.rows.append(

@@ -77,4 +77,4 @@ def ping_ips(ip_list, max_workers=MAX_WORKERS):
         # Conforme cada ping finaliza, adiciona ao resultado
         for fut in as_completed(futures):
             results.append(fut.result())
-    return results
+    return sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0])))

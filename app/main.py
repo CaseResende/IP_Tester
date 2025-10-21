@@ -22,10 +22,12 @@ def main(page: ft.Page):
     def run_ping(e):
         table.rows.clear()
         error_msg.value = ""
+        table.visible = False
         progress.visible = True
         page.update()
 
         raw_ips = ip_input.value.strip()
+
         if not raw_ips:
             error_msg.value = "Por favor, insira pelo menos um IP!"
             progress.visible = False
@@ -64,8 +66,8 @@ def main(page: ft.Page):
         run_button,
         progress,
         ft.Divider(),
-        table,
         error_msg,
+        table,
     )
 
 # Executa o app
