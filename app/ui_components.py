@@ -1,5 +1,7 @@
+import ipaddress
 import flet as ft
 from app.config import TABLE_WIDTH
+
 
 def create_ip_input():
     """Cria o campo de texto para inserir os IPs separados por vírgula"""
@@ -9,6 +11,7 @@ def create_ip_input():
         multiline=True,
         width=TABLE_WIDTH,
     )
+
 
 def create_run_button():
     """Cria o botão de execução do ping"""
@@ -20,6 +23,7 @@ def create_run_button():
         width=250,
     )
 
+
 def create_error_msg():
     """Cria a mensagem de erro para inserir um IP"""
     return ft.Text(
@@ -28,6 +32,7 @@ def create_error_msg():
         size=16,
         weight=ft.FontWeight.BOLD,
     )
+
 
 def create_table():
     """Cria a tabela para exibir resultados"""
@@ -43,6 +48,24 @@ def create_table():
         visible=False
     )
 
+
 def create_progress_bar():
     """Cria a barra de progresso oculta inicialmente"""
     return ft.ProgressBar(width=TABLE_WIDTH, visible=False)
+
+
+def update_table(table, results):
+    table.rows.clear()
+    for ip, online, rtt, msg in sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0]))):
+        color = ft.Colors.GREEN_400 if online else ft.Colors.RED_400
+        status_text = "🟢 Online" if online else "🔴 Offline"
+        table.rows.append(
+            ft.DataRow(
+                cells=[
+                    ft.DataCell(ft.Text(ip)),
+                    ft.DataCell(ft.Text(status_text, color=color)),
+                    ft.DataCell(ft.Text(f"{rtt:.2f}" if rtt else "—")),
+                    ft.DataCell(ft.Text(msg)),
+                ]
+            )
+        )

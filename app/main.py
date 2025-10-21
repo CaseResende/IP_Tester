@@ -1,5 +1,4 @@
 import flet as ft
-import ipaddress
 from app.utils import ping_ips, process_input
 from app.ui_components import *
 
@@ -50,30 +49,9 @@ def main(page: ft.Page):
         else:
             error_msg.value = ""
 
+        update_table(table, results)
         progress.visible = False
         table.visible = True
-        page.update()
-
-        # Preenche a tabela com os resultados
-        for ip, online, rtt, msg in sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0]))):
-            color = ft.Colors.GREEN_400 if online else ft.Colors.RED_400
-            status_text = "🟢 Online" if online else "🔴 Offline"
-            table.rows.append(
-                ft.DataRow(
-                    cells=[
-                        ft.DataCell(ft.Text(ip)),
-                        ft.DataCell(ft.Text(status_text, color=color)),
-                        ft.DataCell(ft.Text(f"{rtt:.2f}" if rtt else "—")),
-                        ft.DataCell(ft.Text(msg)),
-                    ]
-                )
-            )
-
-        # Oculta barra de progresso e exibe a tabela
-        progress.visible = False
-        table.visible = True
-
-        # Atualiza a página
         page.update()
 
     # Conecta o botão ao evento
