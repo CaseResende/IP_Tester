@@ -61,9 +61,10 @@ def main(page: ft.Page):
             # Oculta barra de progresso
             progress.visible = False
 
-            # Exibe a tabela
+            # Exibe a tabela somente se houver um Ip inserido
             table.visible = True
 
+            # Atualiza a página
             page.update()
 
     # Conecta o botão ao evento
