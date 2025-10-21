@@ -69,3 +69,14 @@ def update_table(table, results):
                 ]
             )
         )
+
+def create_copy_button():
+    """Cria o botão para copiar os resultados"""
+    return ft.ElevatedButton(
+        text="Copiar resultados 📋",
+        icon=ft.Icons.COPY_ALL,
+        bgcolor=ft.Colors.BLUE_200,
+        color=ft.Colors.BLACK,
+        width=250,
+        visible=False,  # só aparece após os resultados
+    )

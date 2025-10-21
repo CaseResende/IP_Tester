@@ -17,13 +17,18 @@ def main(page: ft.Page):
     table = create_table()
     progress = create_progress_bar()
     error_msg = create_error_msg()
+    copy_btn = create_copy_button()
+
+    results = []
 
     # Função chamada ao clicar no botão
     def run_ping(e):
+        nonlocal results
         table.rows.clear()
         error_msg.value = ""
         table.visible = False
         progress.visible = True
+        copy_btn.visible = False
         page.update()
 
         raw_ips = ip_input.value.strip()
@@ -54,10 +59,35 @@ def main(page: ft.Page):
         update_table(table, results)
         progress.visible = False
         table.visible = True
+        copy_btn.visible = True
         page.update()
+
+
+    def copy_results(e):
+        if not results:
+            error_msg.value = "Nenhum resultado disponível para copiar!"
+            page.update()
+            return
+
+        # Cabeçalho
+        text_to_copy = f"{'Endereço IP':<16} {'Status':<10} {'Tempo (ms)':<10} Mensagem\n"
+        text_to_copy += "-" * 50 + "\n"
+
+        # Cada linha da tabela
+        for ip, online, rtt, msg in results:
+            status_text = "🟢 Online" if online else "🔴 Offline"
+            rtt_text = f"{rtt:.2f}" if rtt else "—"
+            text_to_copy += f"{ip:<16} {status_text:<10} {rtt_text:<10} {msg}\n"
+
+        # Copia para a área de transferência
+        page.set_clipboard(text_to_copy)
+        error_msg.value = "Resultados copiados para a área de transferência!"
+        page.update()
+
 
     # Conecta o botão ao evento
     run_button.on_click = run_ping
+    copy_btn.on_click = copy_results
 
     # Layout principal da página
     page.add(
@@ -66,6 +96,7 @@ def main(page: ft.Page):
         run_button,
         progress,
         ft.Divider(),
+        copy_btn,
         error_msg,
         table,
     )

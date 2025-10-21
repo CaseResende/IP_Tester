@@ -68,7 +68,7 @@ def ping_ip(ip, timeout=TIMEOUT):
 def ping_ips(ip_list, max_workers=MAX_WORKERS):
     """
     Executa ping paralelo em uma lista de IPs.
-    Retorna uma lista de tuplas (ip, online, rtt, msg)
+    Retorna uma lista ordenada de tuplas (ip, online, rtt, msg)
     """
     results = []
     # Executor para multithreading
@@ -77,4 +77,17 @@ def ping_ips(ip_list, max_workers=MAX_WORKERS):
         # Conforme cada ping finaliza, adiciona ao resultado
         for fut in as_completed(futures):
             results.append(fut.result())
+
     return sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0])))
+
+def format_results(results):
+    """
+    Gera uma string formatada dos resultados de ping.
+    """
+    lines = ["Endereço IP\tStatus\tTempo (ms)\tMensagem"]
+    for ip, online, rtt, msg in results:
+        status = "Online" if online else "Offline"
+        rtt_str = f"{rtt:.2f}" if rtt else "—"
+        lines.append(f"{ip}\t{status}\t{rtt_str}\t{msg}")
+    return "\n".join(lines)
+
