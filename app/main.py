@@ -1,6 +1,6 @@
 import flet as ft
 import ipaddress
-from app.ping_utils import ping_ips
+from app.ping_utils import ping_ips, list_ips
 from app.ui_components import *
 
 def main(page: ft.Page):
@@ -28,6 +28,7 @@ def main(page: ft.Page):
         # Obtém lista de IPs do campo de texto
         raw_ips = ip_input.value.strip()
         if not raw_ips:
+            # Exibe uma mensagem de erro se não houver IP digitado
             error_msg.value = "Por favor, insira pelo menos um IP!"
             progress.visible = False
             table.visible = False
@@ -36,10 +37,8 @@ def main(page: ft.Page):
         else:
             error_msg.value = ""
 
-
-            # Divide, remove duplicados e ordena os IPs
-            ip_list = [ip.strip() for ip in raw_ips.split(",") if ip.strip() != ""]
-            ip_list = sorted(set(ip_list), key=lambda x: int(ipaddress.IPv4Address(x)))
+            # Chama a função list_ips para processar e ordenar os IPs
+            ip_list = list_ips(raw_ips)
 
             # Executa os pings em paralelo
             results = ping_ips(ip_list)
@@ -58,10 +57,9 @@ def main(page: ft.Page):
                         ]
                     )
                 )
-            # Oculta barra de progresso
-            progress.visible = False
 
-            # Exibe a tabela somente se houver um Ip inserido
+            # Oculta barra de progresso e exibe a tabela
+            progress.visible = False
             table.visible = True
 
             # Atualiza a página

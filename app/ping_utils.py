@@ -4,6 +4,17 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.config import MAX_WORKERS, TIMEOUT
 
 
+def list_ips(raw_ips):
+    """
+    Recebe uma string com IPs separados por vírgula, remove duplicados,
+    remove espaços em branco e retorna uma lista ordenada numericamente.
+    """
+    ip_list = [ip.strip() for ip in raw_ips.split(",") if ip.strip() != ""]
+    ip_list = sorted(set(ip_list), key=lambda x: int(ipaddress.IPv4Address(x)))
+
+    return ip_list
+
+
 def ping_ip(ip, timeout=TIMEOUT):
     """
     Executa um ping em um único IP.
