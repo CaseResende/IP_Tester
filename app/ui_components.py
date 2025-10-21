@@ -20,6 +20,15 @@ def create_run_button():
         width=250,
     )
 
+def create_error_msg():
+    """Cria a mensagem de erro para inserir um IP"""
+    return ft.Text(
+        value="",
+        color=ft.Colors.RED_400,
+        size=14,
+        weight=ft.FontWeight.BOLD,
+    )
+
 def create_table():
     """Cria a tabela para exibir resultados"""
     return ft.DataTable(
@@ -31,6 +40,7 @@ def create_table():
         ],
         rows=[],
         width=TABLE_WIDTH,
+        visible=False
     )
 
 def create_progress_bar():
