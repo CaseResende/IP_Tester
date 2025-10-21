@@ -25,7 +25,7 @@ def create_error_msg():
     return ft.Text(
         value="",
         color=ft.Colors.RED_400,
-        size=14,
+        size=16,
         weight=ft.FontWeight.BOLD,
     )
 
@@ -46,5 +46,3 @@ def create_table():
 def create_progress_bar():
     """Cria a barra de progresso oculta inicialmente"""
     return ft.ProgressBar(width=TABLE_WIDTH, visible=False)
-
-

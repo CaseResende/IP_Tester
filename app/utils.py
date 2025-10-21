@@ -7,12 +7,37 @@ from app.config import MAX_WORKERS, TIMEOUT
 def list_ips(raw_ips):
     """
     Recebe uma string com IPs separados por vírgula, remove duplicados,
-    remove espaços em branco e retorna uma lista ordenada numericamente.
+    remove espaços em branco e retorna uma lista.
     """
     ip_list = [ip.strip() for ip in raw_ips.split(",") if ip.strip() != ""]
-    ip_list = sorted(set(ip_list), key=lambda x: int(ipaddress.IPv4Address(x)))
 
-    return ip_list
+    return list(set(ip_list))
+
+
+def validate_ip(ip_list):
+    """
+    Valida os IPs da lista, separando válidos e inválidos.
+    Retorna (lista_válidos, lista_inválidos)
+    """
+    valid_ip_list = []
+    invalid_ip_list = []
+
+    for ip in ip_list:
+        try:
+            ipaddress.ip_address(ip)
+            valid_ip_list.append(ip)
+        except ValueError:
+            invalid_ip_list.append(ip)
+
+    valid_ip_list = sorted(valid_ip_list, key=lambda x: int(ipaddress.IPv4Address(x)))
+    invalid_ip_list = sorted(invalid_ip_list)
+    return valid_ip_list, invalid_ip_list
+
+
+def process_input(raw_ips):
+    ip_list = list_ips(raw_ips)
+    valid_ips, invalid_ips = validate_ip(ip_list)
+    return valid_ips, invalid_ips
 
 
 def ping_ip(ip, timeout=TIMEOUT):

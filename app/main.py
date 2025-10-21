@@ -1,6 +1,6 @@
 import flet as ft
 import ipaddress
-from app.utils import ping_ips, list_ips
+from app.utils import ping_ips, process_input
 from app.ui_components import *
 
 def main(page: ft.Page):
@@ -21,49 +21,60 @@ def main(page: ft.Page):
 
     # Função chamada ao clicar no botão
     def run_ping(e):
-        table.rows.clear()       # Limpa resultados anteriores
-        progress.visible = True   # Mostra barra de progresso
+        table.rows.clear()
+        error_msg.value = ""
+        progress.visible = True
         page.update()
 
-        # Obtém lista de IPs do campo de texto
         raw_ips = ip_input.value.strip()
         if not raw_ips:
-            # Exibe uma mensagem de erro se não houver IP digitado
             error_msg.value = "Por favor, insira pelo menos um IP!"
             progress.visible = False
             table.visible = False
             page.update()
             return
+
+        valid_ips, invalid_ips = process_input(raw_ips)
+
+        if not valid_ips:
+            error_msg.value = "Todos os IPs inseridos são inválidos!"
+            progress.visible = False
+            table.visible = False
+            page.update()
+            return
+
+        results = ping_ips(valid_ips)
+
+        if invalid_ips:
+            error_msg.value = f"Os seguintes IPs são inválidos:\n{', '.join(invalid_ips)}"
         else:
             error_msg.value = ""
 
-            # Chama a função list_ips para processar e ordenar os IPs
-            ip_list = list_ips(raw_ips)
+        progress.visible = False
+        table.visible = True
+        page.update()
 
-            # Executa os pings em paralelo
-            results = ping_ips(ip_list)
-
-            # Preenche a tabela com os resultados
-            for ip, online, rtt, msg in sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0]))):
-                color = ft.Colors.GREEN_400 if online else ft.Colors.RED_400
-                status_text = "🟢 Online" if online else "🔴 Offline"
-                table.rows.append(
-                    ft.DataRow(
-                        cells=[
-                            ft.DataCell(ft.Text(ip)),
-                            ft.DataCell(ft.Text(status_text, color=color)),
-                            ft.DataCell(ft.Text(f"{rtt:.2f}" if rtt else "—")),
-                            ft.DataCell(ft.Text(msg)),
-                        ]
-                    )
+        # Preenche a tabela com os resultados
+        for ip, online, rtt, msg in sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0]))):
+            color = ft.Colors.GREEN_400 if online else ft.Colors.RED_400
+            status_text = "🟢 Online" if online else "🔴 Offline"
+            table.rows.append(
+                ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(ip)),
+                        ft.DataCell(ft.Text(status_text, color=color)),
+                        ft.DataCell(ft.Text(f"{rtt:.2f}" if rtt else "—")),
+                        ft.DataCell(ft.Text(msg)),
+                    ]
                 )
+            )
 
-            # Oculta barra de progresso e exibe a tabela
-            progress.visible = False
-            table.visible = True
+        # Oculta barra de progresso e exibe a tabela
+        progress.visible = False
+        table.visible = True
 
-            # Atualiza a página
-            page.update()
+        # Atualiza a página
+        page.update()
 
     # Conecta o botão ao evento
     run_button.on_click = run_ping
@@ -75,8 +86,8 @@ def main(page: ft.Page):
         run_button,
         progress,
         ft.Divider(),
+        table,
         error_msg,
-        table
     )
 
 # Executa o app
