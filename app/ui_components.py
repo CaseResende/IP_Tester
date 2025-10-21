@@ -5,7 +5,7 @@ def create_ip_input():
     """Cria o campo de texto para inserir os IPs separados por vírgula"""
     return ft.TextField(
         label="Insira os endereços IP separados por vírgula",
-        hint_text="Ex: 192.168.0.1, 192.168.0.10, 10.0.0.5",
+        hint_text="Ex: 192.168.0.1, 172.16.0.1, 10.0.0.5",
         multiline=True,
         width=TABLE_WIDTH,
     )

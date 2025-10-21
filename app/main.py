@@ -1,6 +1,6 @@
 import flet as ft
 import ipaddress
-from app.ping_utils import ping_ips, list_ips
+from app.utils import ping_ips, list_ips
 from app.ui_components import *
 
 def main(page: ft.Page):

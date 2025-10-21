@@ -32,7 +32,7 @@ ip_tester/
 ├── app/                     # Código principal da aplicação
 │   ├── __init__.py
 │   ├── main.py              # Script que roda a interface Flet
-│   ├── ping_utils.py        # Funções de ping
+│   ├── utils.py        # Funções de ping
 │   ├── ui_components.py     # Componentes de interface
 │   ├── config.py            # Configurações globais
 │
