@@ -15,7 +15,7 @@ def create_ip_input():
 def create_run_button():
     """Cria o botão de execução do ping"""
     return ft.ElevatedButton(
-        "Testar Conectividade 🧭",
+        "Testar Conectividade",
         icon=ft.Icons.PLAY_ARROW,
         bgcolor=ft.Colors.BLUE_ACCENT_400,
         color=ft.Colors.WHITE,
@@ -72,10 +72,29 @@ def update_table(table, results):
 def create_copy_button():
     """Cria o botão para copiar os resultados"""
     return ft.ElevatedButton(
-        text="Copiar resultados 📋",
+        text="Copiar resultados",
         icon=ft.Icons.COPY_ALL,
-        bgcolor=ft.Colors.BLUE_200,
-        color=ft.Colors.BLACK,
+        bgcolor=ft.Colors.BLUE_ACCENT_400,
+        color=ft.Colors.WHITE,
         width=250,
         visible=False,  # só aparece após os resultados
     )
+
+def create_theme_button():
+    return ft.IconButton(
+        icon=ft.Icons.LIGHT_MODE,
+        tooltip="Alternar tema",
+        icon_color=ft.Colors.WHITE,
+        style=ft.ButtonStyle(shape=ft.CircleBorder()),
+        visible=True,
+    )
+
+def create_header(theme_btn):
+    return ft.Row(
+    controls=[
+        ft.Text("🔎 Verificador de Conectividade", size=28, weight=ft.FontWeight.BOLD),
+        theme_btn
+    ],
+    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+    width=TABLE_WIDTH,
+)

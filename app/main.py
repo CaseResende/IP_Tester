@@ -5,9 +5,9 @@ from app.ui_components import *
 def main(page: ft.Page):
     # Configurações da página
     page.title = "Verificador de Conectividade - Ping de IPs"
-    page.theme_mode = ft.ThemeMode.DARK
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.START
+    page.theme_mode = ft.ThemeMode.DARK
     page.padding = 30
     page.scroll = ft.ScrollMode.AUTO
 
@@ -18,8 +18,27 @@ def main(page: ft.Page):
     progress = create_progress_bar()
     error_msg = create_error_msg()
     copy_btn = create_copy_button()
+    theme_btn = create_theme_button()
+    header = create_header(theme_btn)
 
     results = []
+
+    def change_theme_mode(e):
+        if page.theme_mode == ft.ThemeMode.DARK:
+            page.theme_mode = ft.ThemeMode.LIGHT
+            theme_btn.icon = ft.Icons.DARK_MODE
+            theme_btn.icon_color = ft.Colors.BLACK
+            theme_btn.selected_icon_color = ft.Colors.BLACK
+            page.update()
+            return
+        else:
+            page.theme_mode = ft.ThemeMode.DARK
+            theme_btn.icon = ft.Icons.LIGHT_MODE
+            theme_btn.icon_color = ft.Colors.WHITE
+            theme_btn.selected_icon_color = ft.Colors.BLACK
+            page.update()
+            return
+
 
     # Função chamada ao clicar no botão
     def run_ping(e):
@@ -85,13 +104,14 @@ def main(page: ft.Page):
         page.update()
 
 
-    # Conecta o botão ao evento
+    # Conecta os botões aos seus respectivos eventos
     run_button.on_click = run_ping
     copy_btn.on_click = copy_results
+    theme_btn.on_click = change_theme_mode
 
     # Layout principal da página
     page.add(
-        ft.Text("🔎 Verificador de Conectividade", size=28, weight=ft.FontWeight.BOLD),
+        header,
         ip_input,
         run_button,
         progress,
