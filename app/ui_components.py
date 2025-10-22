@@ -1,4 +1,3 @@
-import ipaddress
 import flet as ft
 from app.config import TABLE_WIDTH
 

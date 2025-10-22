@@ -79,15 +79,3 @@ def ping_ips(ip_list, max_workers=MAX_WORKERS):
             results.append(fut.result())
 
     return sorted(results, key=lambda x: int(ipaddress.IPv4Address(x[0])))
-
-def format_results(results):
-    """
-    Gera uma string formatada dos resultados de ping.
-    """
-    lines = ["Endereço IP\tStatus\tTempo (ms)\tMensagem"]
-    for ip, online, rtt, msg in results:
-        status = "Online" if online else "Offline"
-        rtt_str = f"{rtt:.2f}" if rtt else "—"
-        lines.append(f"{ip}\t{status}\t{rtt_str}\t{msg}")
-    return "\n".join(lines)
-
