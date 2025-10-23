@@ -55,10 +55,10 @@ Demonstração da mensagem exibida após copiar os resultados para a área de tr
 
 ---
 
-### 💻 Saída no Terminal
-![Saída Terminal](docs/Output.png)
+### 💻 Saída Formatada
+![Saída Formatada](docs/Output.png)
 
-Visualização da saída formatada no terminal, útil para depuração e acompanhamento de testes.
+Visualização da saída formatada pronta para colar.
 
 ---
 
