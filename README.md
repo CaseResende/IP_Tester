@@ -12,6 +12,72 @@ Permite inserir múltiplos IPs separados por vírgula, valida e ordena automatic
 
 ---
 
+## 🖼️ Capturas de Tela
+
+Abaixo estão algumas imagens que demonstram o funcionamento do **IP Tester**, desde a interface inicial até os testes de conectividade e mensagens de erro.
+
+---
+
+### 🌞 Tema Claro
+![Tema Claro](docs/White_theme.png)
+
+Interface principal do **IP Tester** em modo **claro**, exibindo o campo para inserção de IPs e o botão para iniciar os testes de conectividade.
+
+---
+
+### 🌙 Tema Escuro
+![Tema Escuro](docs/Dark_theme.png)
+
+Visual moderno com o **tema escuro**, ideal para ambientes com pouca luminosidade.
+
+---
+
+## 🧪 Testes de Conectividade
+
+### ✅ Teste com Vários IPs
+![Teste com Vários IPs](docs/Test_multiple_ips.png)
+
+Exemplo de execução com múltiplos IPs válidos, mostrando resultados paralelos e ordenados por endereço.
+
+---
+
+### ⚙️ Teste com IPs Válidos e Inválidos
+![Teste IPs Inválidos](docs/Test_ip.png)
+
+O app identifica e separa IPs válidos e inválidos automaticamente, exibindo mensagens de aviso para o usuário.
+
+---
+
+### 🗒️ Resultados Copiados
+![Resultados Copiados](docs/Copied_results.png)
+
+Demonstração da mensagem exibida após copiar os resultados para a área de transferência.
+
+---
+
+### 💻 Saída no Terminal
+![Saída Terminal](docs/Output.png)
+
+Visualização da saída formatada no terminal, útil para depuração e acompanhamento de testes.
+
+---
+
+## ⚠️ Mensagens de Erro
+
+### 🚫 Nenhum IP Inserido
+![Nenhum IP Inserido](docs/No_input.png)
+
+Aviso exibido quando o usuário tenta iniciar o teste sem inserir nenhum IP.
+
+---
+
+### ❌ IPs Inválidos
+![IPs Inválidos](docs/Invalid_input.png)
+
+Mensagem de erro informando quando todos os IPs fornecidos são inválidos.
+
+---
+
 ## ⚙️ Funcionalidades
 
 - Inserção de múltiplos endereços IP (separados por vírgula)
@@ -29,7 +95,6 @@ Permite inserir múltiplos IPs separados por vírgula, valida e ordena automatic
 ---
 
 ## 📂 Estrutura do Projeto
-
 
 ```
 ip_tester/
@@ -82,7 +147,6 @@ Define parâmetros globais:
 ## 🚀 Exemplo de Uso
 ### 📥 Entrada:
 `192.168.0.1,192.168.0.10,10.0.0.5`
-
 
 ### 📤 Saída:
 | Endereço IP | Status       | Tempo (ms) | Mensagem          |

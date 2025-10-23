@@ -2,8 +2,18 @@ import flet as ft
 from app.config import TABLE_WIDTH
 
 
-def create_ip_input():
-    """Cria o campo de texto para inserir os IPs separados por vírgula"""
+# ============================================================
+# 🔹 Campos de entrada e mensagens
+# ============================================================
+
+def create_ip_input() -> ft.TextField:
+    """
+    Cria o campo de texto onde o usuário insere os endereços IP.
+
+    - Permite múltiplas linhas
+    - Aceita IPs separados por vírgula
+    - Possui rótulo e texto de exemplo
+    """
     return ft.TextField(
         label="Insira os endereços IP separados por vírgula",
         hint_text="Ex: 192.168.0.1, 172.16.0.1, 10.0.0.5",
@@ -12,19 +22,11 @@ def create_ip_input():
     )
 
 
-def create_run_button():
-    """Cria o botão de execução do ping"""
-    return ft.ElevatedButton(
-        "Testar Conectividade",
-        icon=ft.Icons.PLAY_ARROW,
-        bgcolor=ft.Colors.BLUE_ACCENT_400,
-        color=ft.Colors.WHITE,
-        width=250,
-    )
-
-
-def create_error_msg():
-    """Cria a mensagem de erro para inserir um IP"""
+def create_error_msg() -> ft.Text:
+    """
+    Cria o campo de texto para exibição de mensagens de erro
+    ou avisos importantes para o usuário.
+    """
     return ft.Text(
         value="",
         color=ft.Colors.RED_400,
@@ -33,8 +35,69 @@ def create_error_msg():
     )
 
 
-def create_table():
-    """Cria a tabela para exibir resultados"""
+# ============================================================
+# 🔹 Botões e ações
+# ============================================================
+
+def create_run_button() -> ft.ElevatedButton:
+    """
+    Cria o botão responsável por iniciar o teste de conectividade (ping).
+    """
+    return ft.ElevatedButton(
+        text="Testar Conectividade",
+        icon=ft.Icons.PLAY_ARROW,
+        bgcolor=ft.Colors.BLUE_ACCENT_400,
+        color=ft.Colors.WHITE,
+        width=250,
+    )
+
+
+def create_copy_button() -> ft.ElevatedButton:
+    """
+    Cria o botão que copia os resultados do teste
+    para a área de transferência.
+
+    Inicialmente invisível, é exibido apenas após os testes.
+    """
+    return ft.ElevatedButton(
+        text="Copiar resultados",
+        icon=ft.Icons.COPY_ALL,
+        bgcolor=ft.Colors.BLUE_ACCENT_400,
+        color=ft.Colors.WHITE,
+        width=250,
+        visible=False,
+    )
+
+
+def create_theme_button() -> ft.IconButton:
+    """
+    Cria o botão de alternância entre temas (claro/escuro).
+
+    Exibe um ícone circular de sol/lua conforme o tema ativo.
+    """
+    return ft.IconButton(
+        icon=ft.Icons.LIGHT_MODE,
+        tooltip="Alternar tema",
+        icon_color=ft.Colors.WHITE,
+        style=ft.ButtonStyle(shape=ft.CircleBorder()),
+        visible=True,
+    )
+
+
+# ============================================================
+# 🔹 Estrutura de exibição de resultados
+# ============================================================
+
+def create_table() -> ft.DataTable:
+    """
+    Cria a tabela principal onde os resultados dos pings são exibidos.
+
+    Colunas:
+        - Endereço IP
+        - Status (Online/Offline)
+        - Tempo de resposta (ms)
+        - Mensagem de status
+    """
     return ft.DataTable(
         columns=[
             ft.DataColumn(ft.Text("Endereço IP", text_align=ft.TextAlign.CENTER)),
@@ -44,20 +107,26 @@ def create_table():
         ],
         rows=[],
         width=TABLE_WIDTH,
-        visible=False
+        visible=False,  # Oculta até que haja resultados
     )
 
 
-def create_progress_bar():
-    """Cria a barra de progresso oculta inicialmente"""
-    return ft.ProgressBar(width=TABLE_WIDTH, visible=False)
+def update_table(table: ft.DataTable, results: list[tuple]) -> None:
+    """
+    Atualiza a tabela com os resultados retornados pela função `ping_ips`.
 
-
-def update_table(table, results):
+    Cada linha contém:
+        - Endereço IP
+        - Status (🟢 Online / 🔴 Offline)
+        - Tempo médio de resposta (ms)
+        - Mensagem de status
+    """
     table.rows.clear()
+
     for ip, online, rtt, msg in results:
         color = ft.Colors.GREEN_400 if online else ft.Colors.RED_400
         status_text = "🟢 Online" if online else "🔴 Offline"
+
         table.rows.append(
             ft.DataRow(
                 cells=[
@@ -69,32 +138,35 @@ def update_table(table, results):
             )
         )
 
-def create_copy_button():
-    """Cria o botão para copiar os resultados"""
-    return ft.ElevatedButton(
-        text="Copiar resultados",
-        icon=ft.Icons.COPY_ALL,
-        bgcolor=ft.Colors.BLUE_ACCENT_400,
-        color=ft.Colors.WHITE,
-        width=250,
-        visible=False,  # só aparece após os resultados
-    )
 
-def create_theme_button():
-    return ft.IconButton(
-        icon=ft.Icons.LIGHT_MODE,
-        tooltip="Alternar tema",
-        icon_color=ft.Colors.WHITE,
-        style=ft.ButtonStyle(shape=ft.CircleBorder()),
-        visible=True,
-    )
+def create_progress_bar() -> ft.ProgressBar:
+    """
+    Cria a barra de progresso exibida enquanto os testes estão em execução.
 
-def create_header(theme_btn):
+    É ocultada por padrão e exibida apenas durante o processo de ping.
+    """
+    return ft.ProgressBar(width=TABLE_WIDTH, visible=False)
+
+
+# ============================================================
+# 🔹 Cabeçalho e layout
+# ============================================================
+
+def create_header(theme_btn: ft.IconButton) -> ft.Row:
+    """
+    Cria o cabeçalho principal da aplicação, exibindo:
+        - Título do app
+        - Botão de alternância de tema
+    """
     return ft.Row(
-    controls=[
-        ft.Text("🔎 Verificador de Conectividade", size=28, weight=ft.FontWeight.BOLD),
-        theme_btn
-    ],
-    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-    width=TABLE_WIDTH,
-)
+        controls=[
+            ft.Text(
+                "🔎 Verificador de Conectividade",
+                size=28,
+                weight=ft.FontWeight.BOLD,
+            ),
+            theme_btn
+        ],
+        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        width=TABLE_WIDTH,
+    )
