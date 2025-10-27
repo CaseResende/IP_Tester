@@ -2,17 +2,9 @@ import flet as ft
 from app.config import TABLE_WIDTH
 
 
-# ============================================================
-# 🔹 Campos de entrada e mensagens
-# ============================================================
-
-def create_ip_input() -> ft.TextField:
+def create_ip_input():
     """
     Cria o campo de texto onde o usuário insere os endereços IP.
-
-    - Permite múltiplas linhas
-    - Aceita IPs separados por vírgula
-    - Possui rótulo e texto de exemplo
     """
     return ft.TextField(
         label="Insira os endereços IP separados por vírgula",
@@ -22,7 +14,7 @@ def create_ip_input() -> ft.TextField:
     )
 
 
-def create_error_msg() -> ft.Text:
+def create_error_msg():
     """
     Cria o campo de texto para exibição de mensagens de erro
     ou avisos importantes para o usuário.
@@ -35,13 +27,9 @@ def create_error_msg() -> ft.Text:
     )
 
 
-# ============================================================
-# 🔹 Botões e ações
-# ============================================================
-
-def create_run_button() -> ft.ElevatedButton:
+def create_run_button():
     """
-    Cria o botão responsável por iniciar o teste de conectividade (ping).
+    Cria o botão responsável por iniciar o teste de conectividade.
     """
     return ft.ElevatedButton(
         text="Testar Conectividade",
@@ -52,12 +40,10 @@ def create_run_button() -> ft.ElevatedButton:
     )
 
 
-def create_copy_button() -> ft.ElevatedButton:
+def create_copy_button():
     """
     Cria o botão que copia os resultados do teste
     para a área de transferência.
-
-    Inicialmente invisível, é exibido apenas após os testes.
     """
     return ft.ElevatedButton(
         text="Copiar resultados",
@@ -69,11 +55,9 @@ def create_copy_button() -> ft.ElevatedButton:
     )
 
 
-def create_theme_button() -> ft.IconButton:
+def create_theme_button():
     """
     Cria o botão de alternância entre temas (claro/escuro).
-
-    Exibe um ícone circular de sol/lua conforme o tema ativo.
     """
     return ft.IconButton(
         icon=ft.Icons.LIGHT_MODE,
@@ -84,19 +68,9 @@ def create_theme_button() -> ft.IconButton:
     )
 
 
-# ============================================================
-# 🔹 Estrutura de exibição de resultados
-# ============================================================
-
-def create_table() -> ft.DataTable:
+def create_table():
     """
     Cria a tabela principal onde os resultados dos pings são exibidos.
-
-    Colunas:
-        - Endereço IP
-        - Status (Online/Offline)
-        - Tempo de resposta (ms)
-        - Mensagem de status
     """
     return ft.DataTable(
         columns=[
@@ -107,19 +81,13 @@ def create_table() -> ft.DataTable:
         ],
         rows=[],
         width=TABLE_WIDTH,
-        visible=False,  # Oculta até que haja resultados
+        visible=False,
     )
 
 
-def update_table(table: ft.DataTable, results: list[tuple]) -> None:
+def update_table(table, results):
     """
     Atualiza a tabela com os resultados retornados pela função `ping_ips`.
-
-    Cada linha contém:
-        - Endereço IP
-        - Status (🟢 Online / 🔴 Offline)
-        - Tempo médio de resposta (ms)
-        - Mensagem de status
     """
     table.rows.clear()
 
@@ -139,24 +107,16 @@ def update_table(table: ft.DataTable, results: list[tuple]) -> None:
         )
 
 
-def create_progress_bar() -> ft.ProgressBar:
+def create_progress_bar():
     """
     Cria a barra de progresso exibida enquanto os testes estão em execução.
-
-    É ocultada por padrão e exibida apenas durante o processo de ping.
     """
     return ft.ProgressBar(width=TABLE_WIDTH, visible=False)
 
 
-# ============================================================
-# 🔹 Cabeçalho e layout
-# ============================================================
-
-def create_header(theme_btn: ft.IconButton) -> ft.Row:
+def create_header(theme_btn):
     """
     Cria o cabeçalho principal da aplicação, exibindo:
-        - Título do app
-        - Botão de alternância de tema
     """
     return ft.Row(
         controls=[
